@@ -62,11 +62,11 @@ public class MainActivity extends AppCompatActivity implements TransactionEvents
 
         int i = initRng();
         byte[] randomBytes = randomBytes(16);
-        Log.println(Log.ERROR, "MISHA LOX", Arrays.toString(randomBytes));
+        Log.println(Log.ERROR, "MISHA molodez", Arrays.toString(randomBytes));
         byte[] encrypted = encrypt(randomBytes, randomBytes);
-        Log.println(Log.ERROR, "SEMEN LOX", Arrays.toString(encrypted));
+        Log.println(Log.ERROR, "SEMEN molodez", Arrays.toString(encrypted));
         byte[] decrypted = decrypt(randomBytes, encrypted);
-        Log.println(Log.ERROR, "ROMAN LOX", Arrays.toString(decrypted));
+        Log.println(Log.ERROR, "ROMAN molodez", Arrays.toString(decrypted));
         findViewById(R.id.sample_button).setOnLongClickListener(view->{
             testHttpClient();
             return true;
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements TransactionEvents
                 });
 
             } catch (Exception ex) {
-                    Log.println(Log.ERROR, "Boba pedik", ex.toString());
+                    Log.println(Log.ERROR, "Boba molodez", ex.toString());
             }
         }).start();
     }
