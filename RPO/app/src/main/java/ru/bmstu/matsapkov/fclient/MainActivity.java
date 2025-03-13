@@ -14,8 +14,14 @@ import android.widget.Toast;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.io.IOUtils;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ru.bmstu.matsapkov.fclient.databinding.ActivityMainBinding;
 
@@ -61,6 +67,10 @@ public class MainActivity extends AppCompatActivity implements TransactionEvents
         Log.println(Log.ERROR, "SEMEN LOX", Arrays.toString(encrypted));
         byte[] decrypted = decrypt(randomBytes, encrypted);
         Log.println(Log.ERROR, "ROMAN LOX", Arrays.toString(decrypted));
+        findViewById(R.id.sample_button).setOnLongClickListener(view->{
+            testHttpClient();
+            return true;
+        });
 
     }
 
@@ -119,5 +129,35 @@ public class MainActivity extends AppCompatActivity implements TransactionEvents
         runOnUiThread(()-> {
             Toast.makeText(MainActivity.this, result ? "ok" : "failed", Toast.LENGTH_SHORT).show();
         });
+    }
+    protected String getPageTitle(String html)
+    {
+        Pattern pattern = Pattern.compile("<title>(.+?)</title>", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(html);
+        String p;
+        if (matcher.find())
+            p = matcher.group(1);
+        else
+            p = "Not found";
+        return p;
+    }
+    protected void testHttpClient()
+    {
+        new Thread(() -> {
+            try {
+                HttpURLConnection uc = (HttpURLConnection)
+                         (new URL("http://10.0.2.2:8080/api/v1/title").openConnection());
+                InputStream inputStream = uc.getInputStream();
+                String html = IOUtils.toString(inputStream);
+                String title = getPageTitle(html);
+                runOnUiThread(() ->
+                {
+                    Toast.makeText(this, title, Toast.LENGTH_LONG).show();
+                });
+
+            } catch (Exception ex) {
+                    Log.println(Log.ERROR, "Boba pedik", ex.toString());
+            }
+        }).start();
     }
 }
