@@ -20,6 +20,11 @@ public class Museum {
     @OneToMany
     private List<Painting> paintings = new ArrayList<>();
 
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "usersmuseums", joinColumns = @JoinColumn(name = "museumid"), inverseJoinColumns = @JoinColumn(name = "userid"))
+    private Set<User> users = new HashSet<>();
+
     public int getId() {
         return id;
     }
@@ -52,6 +57,13 @@ public class Museum {
         this.paintings = paintings;
     }
 
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 
     @Override
     public boolean equals(Object o) {

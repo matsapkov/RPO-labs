@@ -1,6 +1,10 @@
 package ru.bmstu.matsapkov.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -20,4 +24,8 @@ public class Country {
 
     @Column(name = "name")
     public String name;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "country")
+    public List<Artist> artists = new ArrayList<Artist>();
 }

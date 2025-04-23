@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import ru.bmstu.matsapkov.backend.models.Artist;
 import ru.bmstu.matsapkov.backend.models.Country;
 import ru.bmstu.matsapkov.backend.repositories.CountryRepository;
 
@@ -72,6 +73,15 @@ public class CountryController {
         else
             resp.put("deleted", Boolean.FALSE);
         return ResponseEntity.ok(resp);
+    }
+
+    @GetMapping("/{id}/artists")
+    public ResponseEntity<List<Artist>> getArtistsByCountry(@PathVariable long id) {
+        Optional<Country> country = countryRepository.findById(id);
+        if (country.isPresent()) {
+            return ResponseEntity.ok(country.get().artists);
+        }
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Country not found");
     }
 }
 
