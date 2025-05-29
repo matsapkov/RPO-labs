@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/auth")
 public class LoginController {
@@ -41,11 +42,12 @@ public class LoginController {
                     user.setToken(token);
                     user.setActivity(LocalDateTime.now());
                     User savedUser = userRepository.saveAndFlush(user);
+                    System.out.println("Logged in");
                     return ResponseEntity.ok(new LoginResponse(LoginStatus.SUCCESS, savedUser));
                 }
             }
         }
-        return new ResponseEntity<>(new LoginResponse(LoginStatus.FAILURE, null), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(new LoginResponse(LoginStatus.FAILURE, new User()), HttpStatus.UNAUTHORIZED);
     }
 
     @GetMapping("/logout")
@@ -57,6 +59,7 @@ public class LoginController {
                 User user = optionalUser.get();
                 user.setToken(null);
                 userRepository.saveAndFlush(user);
+                System.out.println("Logged out");
                 return ResponseEntity.ok("Logged out successfully");
             }
         }
